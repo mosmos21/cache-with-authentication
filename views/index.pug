@@ -1,0 +1,41 @@
+html
+    head
+        title Cache with Authentication
+    style(type="text/css").
+        .wrapper {
+            display: flex;
+        }
+        .box {
+            width: 160px;
+            height: 180px;
+            margin: 12px;
+        }
+        .image {
+            width: 160px;
+            height: 160px;
+            object-fit: contain;
+            border: 1px solid gray;
+        }
+        .file_name {
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+            text-align: center;
+        }
+    body
+        if isLoggedIn
+            form(action="/sign_out" method="POST")
+                button(type="submit") Sign Out
+        else
+            form(action="/sign_in" method="POST")
+                button(type="submit") Sign In
+        if isLoggedIn
+            form(action="/images" method="POST" enctype="multipart/form-data")
+                input(type="file" name="file" accept=".png")
+                button(type="submit") Submit
+        .wrapper
+            each image in images
+              .box
+                  img.image(src="/images/" + image.id, alt=image.file_name)
+                  .file_name
+                    = image.file_name
